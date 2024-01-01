@@ -67,13 +67,9 @@ for site in sites:
                 for gre_file_path in gre_file_paths:
                     gre_filename = os.path.basename(gre_file_path)
                     gre_filename_tokens = gre_filename.split("_")
-                    if "RX" in gre_filename:
+                    if "RX" in gre_filename and not "ph" in gre_filename:
                         channel_name = gre_filename_tokens[5].split(".")[0]
-                        if ("ph" in gre_filename_tokens[-1]): channel_name += "-ph"
                         copy_scan(gre_file_path, os.path.join(output_anat_path, subject + "_gre-uncombined-" + channel_name + "_T2starw"))
-                    else:
-                        series_number = gre_filename_tokens[0]
-                        copy_scan(gre_file_path, os.path.join(output_anat_path, subject + "_gre_combined-" + series_number + "_T2starw"))
 
             elif dir_basename == "MP2RAGE":
                 mp2rage_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
