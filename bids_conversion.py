@@ -32,6 +32,8 @@ for site in sites:
         assert(os.path.exists(input_path))
 
         output_path = os.path.join(site_output_path, subject)
+        if "sub" in subject.lower(): subject = "sub-" + subject[3:]
+        else: subject = "sub-" + subject
 
         output_anat_path = os.path.join(output_path, "anat")
         output_fmap_path = os.path.join(output_path, "fmap")
