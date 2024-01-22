@@ -24,16 +24,17 @@ os.makedirs(output_path_root)
 
 for site in sites:
     # Output directories are all generated in the outputs folder
-    site_output_path = os.path.join(output_path_root, site)
 
     for subject in subjects:
         # Input directories are named SITE-original, for example "MGH-original"
         input_path = os.path.join(project_root, site + "-original", subject)
         assert(os.path.exists(input_path))
 
-        output_path = os.path.join(site_output_path, subject)
-        if "sub" in subject.lower(): subject = "sub-" + subject[3:]
-        else: subject = "sub-" + subject
+        subject_prefix = "sub-" + site
+        subject = subject.lower()
+        if "sub" in subject: subject = subject_prefix + subject[3:]
+        else: subject = subject_prefix + subject
+        output_path = os.path.join(output_path_root, subject)
 
         output_anat_path = os.path.join(output_path, "anat")
         output_fmap_path = os.path.join(output_path, "fmap")
