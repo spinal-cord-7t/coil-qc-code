@@ -1,6 +1,7 @@
 import os
 import shutil
 import glob
+import json
 
 
 # This script should be run from the directory containing the input sites directories
@@ -13,6 +14,10 @@ def copy_scan(input_path, output_path):
     json_path = input_path.replace(".nii.gz", ".json")
     shutil.copy2(nii_path, output_path + ".nii.gz")
     shutil.copy2(json_path, output_path + ".json")
+
+def series_description(json_file_path):
+    with open(json_file_path) as f:
+        return json.load(f)["SeriesDescription"]
 
 
 # Output directories are all generated in the outputs folder
@@ -77,7 +82,11 @@ for site in sites:
                 mp2rage_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
                 mp2rage_types = ["INV1", "INV2", "UNI"]
                 for i in range(len(mp2rage_file_paths)):
-                    copy_scan(mp2rage_file_paths[i], os.path.join(output_anat_path, subject + "_mp2rage-" + mp2rage_types[i]))
+                    series_desc = series_description(mp2rage_file_paths[i].replace(".nii.gz", ".json"))
+                    for mp2rage_type_index in range(len(mp2rage_types)):
+                        mp2rage_type = mp2rage_types[mp2rage_type_index]
+                        if mp2rage_type in series_desc:
+                            copy_scan(mp2rage_file_paths[i], os.path.join(output_anat_path, subject + "_mp2rage-" + mp2rage_type))
 
             elif dir_basename == "TFL_B1_C3C4":
                 tfl_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
