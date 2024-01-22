@@ -6,9 +6,7 @@ import glob
 # This script should be run from the directory containing the input sites directories
 project_root = './'
 
-sites = ["MGH", "MNI"]
-subjects = ["SubD", "SubL", "SubR", "Spinoza6"]
-
+sites = ["MGH", "MNI", "NYU"]
 
 def copy_scan(input_path, output_path):
     nii_path = input_path
@@ -23,11 +21,11 @@ if os.path.exists(output_path_root): shutil.rmtree(output_path_root)
 os.makedirs(output_path_root)
 
 for site in sites:
-    # Output directories are all generated in the outputs folder
+    # Input directories are named SITE-original, for example "MGH-original"
+    input_site_path = os.path.join(project_root, site + "-original")
 
-    for subject in subjects:
-        # Input directories are named SITE-original, for example "MGH-original"
-        input_path = os.path.join(project_root, site + "-original", subject)
+    for subject in [subject_dir for subject_dir in os.listdir(input_site_path) if os.path.isdir(os.path.join(input_site_path, subject_dir))]:
+        input_path = os.path.join(input_site_path, subject)
         assert(os.path.exists(input_path))
 
         subject_prefix = "sub-" + site
@@ -45,7 +43,8 @@ for site in sites:
             dir_basename = os.path.basename(dir_path)
 
             if dir_basename == "COILQA_SAG_LARGE":
-                snr_input_path = sorted(glob.glob(os.path.join(dir_path, "*.nii.gz")))[1]
+                sag_large_files = sorted(glob.glob(os.path.join(dir_path, "*.nii.gz")))
+                snr_input_path = sag_large_files[1 if len(sag_large_files) > 1 else 0]
                 copy_scan(snr_input_path, os.path.join(output_fmap_path, subject + "_coilqa-sag-large-SNR"))
 
             elif dir_basename == "COILQA_SAG_SMALL":
