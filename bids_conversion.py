@@ -8,6 +8,7 @@ import json
 project_root = './'
 
 sites = ["MGH", "MNI", "NYU"]
+subject_input_names = ["SubD", "SubL", "SubR", "Spinoza6"]
 
 def copy_scan(input_path, output_path):
     nii_path = input_path
@@ -34,9 +35,7 @@ for site in sites:
         assert(os.path.exists(input_path))
 
         subject_prefix = "sub-" + site
-        subject = subject.lower()
-        if "sub" in subject: subject = subject_prefix + subject[3:]
-        else: subject = subject_prefix + subject
+        subject = "sub-" + site + str(subject_input_names.index(subject) + 1)
         output_path = os.path.join(output_path_root, subject)
 
         output_anat_path = os.path.join(output_path, "anat")
