@@ -26,6 +26,8 @@ output_path_root = os.path.join(project_root, "outputs")
 if os.path.exists(output_path_root): shutil.rmtree(output_path_root)
 os.makedirs(output_path_root)
 
+participants_tsv_text = "participant_id\tspecies\tage\tsex\tpathology\tinstitution\tfield\n"
+
 for site in sites:
     # Input directories are named SITE-original, for example "MGH-original"
     input_site_path = os.path.join(project_root, site + "-original")
@@ -37,6 +39,8 @@ for site in sites:
         subject_prefix = "sub-" + site
         subject = "sub-" + site + str(subject_input_names.index(subject) + 1)
         output_path = os.path.join(output_path_root, subject)
+
+        participants_tsv_text += "\t".join([subject, "homo sapiens", "n/a", "n/a", "HC", site, "7T"]) + "\n"
 
         output_anat_path = os.path.join(output_path, "anat")
         output_fmap_path = os.path.join(output_path, "fmap")
@@ -92,4 +96,5 @@ for site in sites:
                 copy_scan(tfl_file_paths[0], os.path.join(output_fmap_path, subject + "_tfl-mag"))
                 copy_scan(tfl_file_paths[2], os.path.join(output_fmap_path, subject + "_tfl-FAmap"))
 
-
+with open(os.path.join(output_path_root, "participants.tsv"), "w") as f:
+    f.write(participants_tsv_text)
