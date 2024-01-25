@@ -77,8 +77,8 @@ for site in sites:
                 for gre_file_path in gre_file_paths:
                     gre_filename = os.path.basename(gre_file_path)
                     gre_filename_tokens = gre_filename.split("_")
-                    if "RX" in gre_filename and not "ph" in gre_filename:
-                        channel_name = gre_filename_tokens[5].split(".")[0]
+                    channel_name = gre_filename_tokens[-1].split(".")[0]
+                    if ("RX" in channel_name or channel_name.startswith("i")) and not "ph" in gre_filename:
                         copy_scan(gre_file_path, os.path.join(output_anat_path, subject + "_gre-uncombined-" + channel_name + "_T2starw"))
 
             elif dir_basename == "MP2RAGE":
