@@ -2,6 +2,7 @@ import os
 import shutil
 import glob
 import json
+import re
 
 
 # This script should be run from the directory containing the input sites directories
@@ -53,15 +54,15 @@ for site in sites:
             if dir_basename == "COILQA_SAG_LARGE":
                 sag_large_files = sorted(glob.glob(os.path.join(dir_path, "*.nii.gz")))
                 snr_input_path = sag_large_files[1 if len(sag_large_files) > 1 else 0]
-                copy_scan(snr_input_path, os.path.join(output_fmap_path, subject + "_coilqa-sag-large-SNR"))
+                copy_scan(snr_input_path, os.path.join(output_fmap_path, subject + "_acq-coilqaSagLarge_SNR"))
 
             elif dir_basename == "COILQA_SAG_SMALL":
                 gfactor_input_path = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))[0]
-                copy_scan(gfactor_input_path, os.path.join(output_fmap_path, subject + "_coilqa-sag-small-GFactor"))
+                copy_scan(gfactor_input_path, os.path.join(output_fmap_path, subject + "_acq-coilqaSagSmall_GFactor"))
 
             elif dir_basename == "COILQA_TRA":
                 gfactor_input_path = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))[0]
-                copy_scan(gfactor_input_path, os.path.join(output_fmap_path, subject + "_coilqa-tra-GFactor"))
+                copy_scan(gfactor_input_path, os.path.join(output_fmap_path, subject + "_acq-coilqaTra_GFactor"))
 
             elif dir_basename in ["DREAM_MEDIUM", "DREAM_MEDIUM_066", "DREAM_MEDIUM_HWLIMIT"]:
                 dream_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
@@ -69,8 +70,8 @@ for site in sites:
                     dream_filename_tokens = os.path.basename(dream_file_path).split("_")
                     eVer = dream_filename_tokens[-1].split(".")[0]
                     series_number = dream_filename_tokens[0]
-                    scan_type = dir_basename.lower().replace("_", "-")
-                    copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_" + scan_type + "-" + eVer + "-" + series_number))
+                    scan_type = "".join([token.capitalize() for token in dir_basename.lower().split("_")]).replace(dir_basename[0], dir_basename[0].lower())
+                    copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_acq-" + scan_type + "_" + eVer + "_" + series_number))
 
             elif dir_basename == "GRE":
                 gre_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
@@ -79,7 +80,8 @@ for site in sites:
                     gre_filename_tokens = gre_filename.split("_")
                     channel_name = gre_filename_tokens[-1].split(".")[0]
                     if ("RX" in channel_name or channel_name.startswith("i")) and not "ph" in gre_filename:
-                        copy_scan(gre_file_path, os.path.join(output_anat_path, subject + "_gre-uncombined-" + channel_name + "_T2starw"))
+                        channel_name = re.findall(r"\d+", channel_name)[0]
+                        copy_scan(gre_file_path, os.path.join(output_anat_path, subject + "_acq-greUncombined" + channel_name + "_T2starw"))
 
             elif dir_basename == "MP2RAGE":
                 mp2rage_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
@@ -89,12 +91,12 @@ for site in sites:
                     for mp2rage_type_index in range(len(mp2rage_types)):
                         mp2rage_type = mp2rage_types[mp2rage_type_index]
                         if mp2rage_type in series_desc:
-                            copy_scan(mp2rage_file_paths[i], os.path.join(output_anat_path, subject + "_mp2rage-" + mp2rage_type))
+                            copy_scan(mp2rage_file_paths[i], os.path.join(output_anat_path, subject + "_acq-mp2rage" + mp2rage_type))
 
             elif dir_basename == "TFL_B1_C3C4":
                 tfl_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
-                copy_scan(tfl_file_paths[0], os.path.join(output_fmap_path, subject + "_tfl-mag"))
-                copy_scan(tfl_file_paths[2], os.path.join(output_fmap_path, subject + "_tfl-FAmap"))
+                copy_scan(tfl_file_paths[0], os.path.join(output_fmap_path, subject + "_acq-tfl_mag"))
+                copy_scan(tfl_file_paths[2], os.path.join(output_fmap_path, subject + "_acq-tfl_FAmap"))
 
 with open(os.path.join(output_path_root, "participants.tsv"), "w") as f:
     f.write(participants_tsv_text)
