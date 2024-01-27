@@ -69,14 +69,14 @@ for site in sites:
                 gfactor_input_path = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))[0]
                 copy_scan(gfactor_input_path, os.path.join(output_fmap_path, subject + "_acq-coilQaTra_GFactor"))
 
-            elif dir_basename in ["DREAM_MEDIUM", "DREAM_MEDIUM_066", "DREAM_MEDIUM_HWLIMIT"]:
+            elif dir_basename in (dream_directory_names := ["DREAM_MEDIUM", "DREAM_MEDIUM_066", "DREAM_MEDIUM_HWLIMIT"]):
                 dream_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
                 for dream_file_path in dream_file_paths:
                     dream_filename_tokens = os.path.basename(dream_file_path).split("_")
                     eVer = dream_filename_tokens[-1].split(".")[0]
                     series_number = dream_filename_tokens[0]
-                    scan_type = "".join([token.capitalize() for token in dir_basename.lower().split("_")]).replace(dir_basename[0], dir_basename[0].lower())
-                    copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_acq-" + scan_type + "_" + eVer + "_" + series_number))
+                    scan_type = ["dreamMediumRefV0.66", "dreamMediumRefV1", "dreamMediumRefV1.5"][dream_directory_names.index(dir_basename)]
+                    copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_acq-" + scan_type + "-" + eVer + "-" + series_number))
 
             elif dir_basename == "GRE":
                 gre_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
@@ -86,7 +86,7 @@ for site in sites:
                     channel_name = gre_filename_tokens[-1].split(".")[0]
                     if ("RX" in channel_name or channel_name.startswith("i")) and not "ph" in gre_filename:
                         channel_name = re.findall(r"\d+", channel_name)[0]
-                        copy_scan(gre_file_path, os.path.join(output_anat_path, subject + "_acq-uncombined" + channel_name + "_T2starw"))
+                        copy_scan(gre_file_path, os.path.join(output_anat_path, subject + "_rec-uncombined" + channel_name + "_T2starw"))
 
             elif dir_basename == "MP2RAGE":
                 mp2rage_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
@@ -97,13 +97,17 @@ for site in sites:
                     for mp2rage_type_index in range(len(mp2rage_types)):
                         mp2rage_type = mp2rage_types[mp2rage_type_index]
                         if mp2rage_type in series_desc:
-                            json_additional = "" if mp2rage_type == "UNI" else "part-mag"
+                            json_additional = "part-mag"
+                            suffix = "_MP2RAGE"
+                            if mp2rage_type == "UNI":
+                                json_additional = ""
+                                suffix = ""
                             mp2rage_type = mp2rage_type_names[mp2rage_type_index]
-                            copy_scan(mp2rage_file_paths[i], os.path.join(output_anat_path, subject + "_" + mp2rage_type + "_MP2RAGE"), json_additional)
+                            copy_scan(mp2rage_file_paths[i], os.path.join(output_anat_path, subject + "_" + mp2rage_type + suffix), json_additional)
 
             elif dir_basename == "TFL_B1_C3C4":
                 tfl_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
-                copy_scan(tfl_file_paths[0], os.path.join(output_fmap_path, subject + "_acq-mag_TB1TFL"))
+                copy_scan(tfl_file_paths[0], os.path.join(output_fmap_path, subject + "_acq-anat_TB1TFL"))
                 copy_scan(tfl_file_paths[2], os.path.join(output_fmap_path, subject + "_acq-famp_TB1TFL"))
 
 with open(os.path.join(output_path_root, "participants.tsv"), "w") as f:
