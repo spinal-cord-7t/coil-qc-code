@@ -73,10 +73,10 @@ for site in sites:
                 dream_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
                 for dream_file_path in dream_file_paths:
                     dream_filename_tokens = os.path.basename(dream_file_path).split("_")
-                    eVer = dream_filename_tokens[-1].split(".")[0]
+                    eVer = "echo-" + dream_filename_tokens[-1].split(".")[0][1:]
                     series_number = dream_filename_tokens[0]
                     scan_type = ["dreamMediumRefV0.66", "dreamMediumRefV1", "dreamMediumRefV1.5"][dream_directory_names.index(dir_basename)]
-                    copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_acq-" + scan_type + "-" + eVer + "-" + series_number))
+                    copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_acq-" + scan_type + "_" + eVer + "-" + series_number))
 
             elif dir_basename == "GRE":
                 gre_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
