@@ -22,9 +22,9 @@ def copy_scan(input_path, output_path, scan_additional=""):
     shutil.copy2(nii_path, output_scan_path)
     shutil.copy2(json_path, output_path + ".json")
 
-def series_description(json_file_path):
+def json_attribute(attribute_name, json_file_path):
     with open(json_file_path) as f:
-        return json.load(f)["SeriesDescription"]
+        return json.load(f)[attribute_name]
 
 
 # Output directories are all generated in the outputs folder
@@ -84,16 +84,19 @@ for site in sites:
                     gre_filename = os.path.basename(gre_file_path)
                     gre_filename_tokens = gre_filename.split("_")
                     channel_name = gre_filename_tokens[-1].split(".")[0]
-                    if ("RX" in channel_name or channel_name.startswith("i")) and not "ph" in gre_filename:
-                        channel_name = re.findall(r"\d+", channel_name)[0]
-                        copy_scan(gre_file_path, os.path.join(output_anat_path, subject + "_rec-uncombined" + channel_name + "_T2starw"))
+                    if not "ph" in gre_filename:
+                        if ("RX" in channel_name or channel_name.startswith("i")):
+                            channel_number = re.findall(r"\d+", channel_name)[0]
+                            copy_scan(gre_file_path, os.path.join(output_anat_path, subject + "_rec-uncombined" + channel_number + "_T2starw"))
+                        elif json_attribute("NonlinearGradientCorrection", gre_file_path.replace(".nii.gz", ".json")) == True:
+                            copy_scan(gre_file_path, os.path.join(output_anat_path, subject + "_T2starw"))
 
             elif dir_basename == "MP2RAGE":
                 mp2rage_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
                 mp2rage_types = ["INV1", "INV2", "UNI"]
                 mp2rage_type_names = ["inv-1", "inv-2", "UNIT1"]
                 for i in range(len(mp2rage_file_paths)):
-                    series_desc = series_description(mp2rage_file_paths[i].replace(".nii.gz", ".json"))
+                    series_desc = json_attribute("SeriesDescription", mp2rage_file_paths[i].replace(".nii.gz", ".json"))
                     for mp2rage_type_index in range(len(mp2rage_types)):
                         mp2rage_type = mp2rage_types[mp2rage_type_index]
                         if mp2rage_type in series_desc:
