@@ -71,12 +71,18 @@ for site in sites:
 
             elif dir_basename in (dream_directory_names := ["DREAM_MEDIUM", "DREAM_MEDIUM_066", "DREAM_MEDIUM_HWLIMIT"]):
                 dream_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
+                dream_allowed_scan_types = {
+                    "Reference Voltage Map": "refv",
+                    "Flipangle Map": "famp",
+                }
                 for dream_file_path in dream_file_paths:
+                    dream_json_path = dream_file_path.replace(".nii.gz", ".json")
                     dream_filename_tokens = os.path.basename(dream_file_path).split("_")
-                    eVer = "echo-" + dream_filename_tokens[-1].split(".")[0][1:]
-                    series_number = dream_filename_tokens[0]
-                    scan_type = ["dreamMediumRefV0.66", "dreamMediumRefV1", "dreamMediumRefV1.5"][dream_directory_names.index(dir_basename)]
-                    copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_acq-" + scan_type + "_" + eVer + "-" + series_number))
+                    if json_attribute("NonlinearGradientCorrection", dream_json_path): continue
+                    scan_type = json_attribute("ImageComments", dream_json_path).split(";")[0]
+                    if scan_type not in dream_allowed_scan_types: continue
+                    scan_type = dream_allowed_scan_types[scan_type]
+                    copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_acq-" + scan_type + "_TB1DREAM"))
 
             elif dir_basename == "GRE":
                 gre_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
