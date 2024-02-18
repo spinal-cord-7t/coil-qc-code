@@ -123,6 +123,8 @@ for site in sites:
 
             elif dir_basename == "TFL_B1_C3C4" or dir_basename == "TFL" or dir_basename == "TFL_B1_OPT":
                 tfl_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
+                anat_found = False
+                famp_found = False
                 for tfl_file_path in tfl_file_paths:
                     tfl_json_path = tfl_file_path.replace(".nii.gz", ".json")
                     if json_attribute("NonlinearGradientCorrection", tfl_json_path): continue
@@ -130,8 +132,14 @@ for site in sites:
                     if image_comments is None: continue
                     if "anatomical image" in image_comments:
                         copy_scan(tfl_file_path, os.path.join(output_fmap_path, subject + "_acq-anat_TB1TFL"))
+                        anat_found = True
                     elif "flip angle map" in image_comments:
                         copy_scan(tfl_file_path, os.path.join(output_fmap_path, subject + "_acq-famp_TB1TFL"))
+                        famp_found = True
+                if not anat_found:
+                    copy_scan(tfl_file_paths[0], os.path.join(output_fmap_path, subject + "_acq-anat_TB1TFL"))
+                if not famp_found:
+                    copy_scan(tfl_file_paths[2], os.path.join(output_fmap_path, subject + "_acq-famp_TB1TFL"))
 
 with open(os.path.join(output_path_root, "participants.tsv"), "w") as f:
     f.write(participants_tsv_text)
