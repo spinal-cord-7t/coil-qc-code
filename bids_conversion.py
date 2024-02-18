@@ -24,7 +24,9 @@ def copy_scan(input_path, output_path, scan_additional=""):
 
 def json_attribute(attribute_name, json_file_path):
     with open(json_file_path) as f:
-        return json.load(f)[attribute_name]
+        json_data = json.load(f)
+        if not attribute_name in json_data: return None
+        return json_data[attribute_name]
 
 
 # Output directories are all generated in the outputs folder
@@ -69,18 +71,23 @@ for site in sites:
                 gfactor_input_path = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))[0]
                 copy_scan(gfactor_input_path, os.path.join(output_fmap_path, subject + "_acq-coilQaTra_GFactor"))
 
-            elif dir_basename in (dream_directory_names := ["DREAM_MEDIUM", "DREAM_MEDIUM_066", "DREAM_MEDIUM_HWLIMIT"]):
+            elif dir_basename in (dream_directory_names := ["DREAM_MEDIUM", "DREAM_MEDIUM_066", "DREAM_MEDIUM_HWLIMIT", "DREAM"]):
                 dream_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
                 dream_allowed_scan_types = {
                     "Reference Voltage Map": "refv",
                     "Flipangle Map": "famp",
+                    "REFVOLTMAP": "refv",
+                    "B1MAP": "famp",
                 }
                 for dream_file_path in dream_file_paths:
                     dream_json_path = dream_file_path.replace(".nii.gz", ".json")
-                    dream_filename_tokens = os.path.basename(dream_file_path).split("_")
                     if json_attribute("NonlinearGradientCorrection", dream_json_path): continue
-                    scan_type = json_attribute("ImageComments", dream_json_path).split(";")[0]
-                    if scan_type not in dream_allowed_scan_types: continue
+                    scan_type = json_attribute("ImageComments", dream_json_path)
+                    if scan_type is None:
+                        scan_type = json_attribute("ImageType", dream_json_path)[-1]
+                    else:
+                        scan_type = scan_type.split(";")[0]
+                    if scan_type not in dream_allowed_scan_types and scan_type: continue
                     scan_type = dream_allowed_scan_types[scan_type]
                     copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_acq-" + scan_type + "_TB1DREAM"))
 
