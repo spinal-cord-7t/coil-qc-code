@@ -71,7 +71,7 @@ for site in sites:
                 gfactor_input_path = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))[0]
                 copy_scan(gfactor_input_path, os.path.join(output_fmap_path, subject + "_acq-coilQaTra_GFactor"))
 
-            elif dir_basename in (dream_directory_names := ["DREAM_MEDIUM", "DREAM_MEDIUM_066", "DREAM_MEDIUM_HWLIMIT", "DREAM"]):
+            elif dir_basename in (dream_directory_names := ["DREAM_MEDIUM", "DREAM"]):
                 dream_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
                 dream_allowed_scan_types = {
                     "Reference Voltage Map": "refv",
