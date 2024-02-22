@@ -1,0 +1,284 @@
+{
+    "searchMethod": "fnmatch",
+    "descriptions": [
+        {
+            "dataType": "anat",
+            "modalityLabel": "gre",
+            "criteria": {
+                "SeriesDescription": "*gre*"
+            }
+        },
+        {
+            "dataType": "anat",
+            "modalityLabel": "MP2RAGE_RFSHIM",
+            "criteria": {
+                "SeriesDescription": "*mp2rage*",
+                "ImageType":[ "*","*","T1 MAP","DIS2D"]
+            }
+        },
+        {
+            "dataType": "anat",
+            "modalityLabel": "T2w",
+            "criteria": {
+                "SidecarFilename": "007*",
+                "EchoTime": 0.1
+            }
+        },
+        {
+            "dataType": "anat",
+            "modalityLabel": "PD",
+            "criteria": {
+                "SeriesDescription": "*TSE*",
+                "EchoTime": 0.008
+            }
+        },
+        {
+            "dataType": "anat",
+            "modalityLabel": "FLAIR",
+            "criteria": {
+                "SeriesDescription": "*FLAIR*"
+            }
+        },
+        {
+            "dataType": "anat",
+            "modalityLabel": "SWI",
+            "criteria": {
+                "SeriesDescription": "*SWI*"
+            }
+        },
+        {
+            "dataType": "anat",
+            "modalityLabel": "unshimmed_e1",
+            "criteria": {
+                "SeriesDescription": "*gre*realtime*",
+                "ImageType": ["*", "*", "M", "*"],
+                "EchoNumber": "1"
+            }
+        },
+        {
+            "dataType": "anat",
+            "modalityLabel": "unshimmed_e2",
+            "criteria": {
+                "SeriesDescription": "*gre*realtime*",
+                "ImageType": ["*", "*", "M", "*"],
+                "EchoNumber": "2"
+            }
+        },
+        {
+            "dataType": "anat",
+            "modalityLabel": "unshimmed_e3",
+            "criteria": {
+                "SeriesDescription": "*gre*realtime*",
+                "ImageType": ["*", "*", "M", "*"],
+                "EchoNumber": "3"
+            }
+        },
+        {
+            "dataType": "anat",
+            "modalityLabel": "unshimmed_phase_e1",
+            "criteria": {
+                "SeriesDescription": "*gre*realtime*",
+                "ImageType": ["*", "*", "P", "*", "*"],
+                "EchoNumber": "1"
+            }
+        },
+        {
+            "dataType": "anat",
+            "modalityLabel": "unshimmed_phase_e2",
+            "criteria": {
+                "SeriesDescription": "*gre*realtime*",
+                "ImageType": ["*", "*", "P", "*", "*"],
+                "EchoNumber": "2"
+            }
+        },
+        {
+            "dataType": "anat",
+            "modalityLabel": "unshimmed_phase_e3",
+            "criteria": {
+                "SeriesDescription": "*gre*realtime*",
+                "ImageType": ["*", "*", "P", "*", "*"],
+                "EchoNumber": "3"
+            }
+        },
+        {
+            "dataType": "anat",
+            "modalityLabel": "epi",
+            "criteria": {
+                "SequenceName": "*epfid2d*",
+                "ImageType": ["*", "*", "M", "*", "*"]
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "magnitude1",
+            "criteria": {
+                "SequenceName": "fm2d2",
+                "ImageType": ["*", "*", "M", "*"],
+                "EchoNumber": "1"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "magnitude2",
+            "criteria": {
+                "SequenceName": "fm2d2",
+                "ImageType": ["*", "*", "M", "*"],
+                "EchoNumber": "2"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "phase1",
+            "criteria": {
+                "SequenceName": "fm2d2",
+                "ImageType": ["*", "*", "P", "*", "*"],
+                "EchoNumber": "1"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "phase2",
+            "criteria": {
+                "SequenceName": "fm2d2",
+                "ImageType": ["*", "*", "P", "*", "*"],
+                "EchoNumber": "2"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "magnitude1",
+            "criteria": {
+                "SequenceName": "fl2d6",
+                "ImageType": ["*", "*", "M", "*"],
+                "EchoNumber": "1"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "magnitude2",
+            "criteria": {
+                "SequenceName": "fl2d6",
+                "ImageType": ["*", "*", "M", "*"],
+                "EchoNumber": "2"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "magnitude3",
+            "criteria": {
+                "SequenceName": "fl2d6",
+                "ImageType": ["*", "*", "M", "*"],
+                "EchoNumber": "3"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "magnitude4",
+            "criteria": {
+                "SequenceName": "fl2d6",
+                "ImageType": ["*", "*", "M", "*"],
+                "EchoNumber": "4"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "magnitude5",
+            "criteria": {
+                "SequenceName": "fl2d6",
+                "ImageType": ["*", "*", "M", "*"],
+                "EchoNumber": "5"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "magnitude6",
+            "criteria": {
+                "SequenceName": "fl2d6",
+                "ImageType": ["*", "*", "M", "*"],
+                "EchoNumber": "6"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "phase1",
+            "criteria": {
+                "SequenceName": "fl2d6",
+                "ImageType": ["*", "*", "P", "*", "*"],
+                "EchoNumber": "1"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "phase2",
+            "criteria": {
+                "SequenceName": "fl2d6",
+                "ImageType": ["*", "*", "P", "*", "*"],
+                "EchoNumber": "2"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "phase3",
+            "criteria": {
+                "SequenceName": "fl2d6",
+                "ImageType": ["*", "*", "P", "*", "*"],
+                "EchoNumber": "3"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "phase4",
+            "criteria": {
+                "SequenceName": "fl2d6",
+                "ImageType": ["*", "*", "P", "*", "*"],
+                "EchoNumber": "4"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "phase5",
+            "criteria": {
+                "SequenceName": "fl2d6",
+                "ImageType": ["*", "*", "P", "*", "*"],
+                "EchoNumber": "5"
+            }
+        },
+        {
+            "dataType": "fmap",
+            "modalityLabel": "phase6",
+            "criteria": {
+                "SequenceName": "fl2d6",
+                "ImageType": ["*", "*", "P", "*", "*"],
+                "EchoNumber": "6"
+            }
+        },
+        {
+            "dataType": "func",
+            "modalityLabel": "bold",
+            "criteria": {
+                "SeriesDescription": "*bold*"
+            }
+        },
+        {
+            "dataType": "func",
+            "modalityLabel": "task",
+            "criteria": {
+                "SeriesDescription": "*task-p2-s3*"
+            }
+        },
+        {
+            "dataType": "dwi",
+            "modalityLabel": "dwi",
+            "criteria": {
+                "SeriesDescription": "*DWI*"
+            }
+        },
+        {
+            "dataType": "rfmap",
+            "modalityLabel": "TB1map",
+            "criteria": {
+                "SequenceName": "*tfl2d1_16"
+            }
+        }
+    ]
+}
