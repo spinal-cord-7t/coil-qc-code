@@ -71,13 +71,17 @@ for site in sites:
                 gfactor_input_path = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))[0]
                 copy_scan(gfactor_input_path, os.path.join(output_fmap_path, subject + "_acq-coilQaTra_GFactor"))
 
-            elif dir_basename in (dream_directory_names := ["DREAM_MEDIUM", "DREAM"]):
+            elif dir_basename in (dream_directory_names := ["DREAM_MEDIUM", "DREAM", "DREAM_MEDIUM_066", "DREAM_MEDIUM_HWLIMIT"]):
                 dream_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
                 dream_allowed_scan_types = {
                     "Reference Voltage Map": "refv",
                     "Flipangle Map": "famp",
                     "REFVOLTMAP": "refv",
                     "B1MAP": "famp",
+                }
+                dream_acq_voltage_token = {
+                    "DREAM_MEDIUM_066": "0.66",
+                    "DREAM_MEDIUM_HWLIMIT": "1.5"
                 }
                 for dream_file_path in dream_file_paths:
                     dream_json_path = dream_file_path.replace(".nii.gz", ".json")
@@ -89,7 +93,11 @@ for site in sites:
                         scan_type = scan_type.split(";")[0]
                     if scan_type not in dream_allowed_scan_types and scan_type: continue
                     scan_type = dream_allowed_scan_types[scan_type]
-                    copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_acq-" + scan_type + "_TB1DREAM"))
+                    voltage_token = ""
+                    if dir_basename in dream_acq_voltage_token:
+                        voltage_token = "-" + dream_acq_voltage_token[dir_basename]
+                    if scan_type != "famp" and voltage_token != "": continue
+                    copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_acq-" + scan_type + voltage_token + "_TB1DREAM"))
 
             elif dir_basename == "GRE":
                 gre_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
