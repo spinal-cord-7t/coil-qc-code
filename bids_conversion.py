@@ -97,7 +97,6 @@ for site in sites:
                     voltage_token = ""
                     if dir_basename in dream_acq_voltage_token:
                         voltage_token = "-" + dream_acq_voltage_token[dir_basename]
-                    if scan_type != "famp" and voltage_token != "": continue
                     copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_acq-" + scan_type + voltage_token + "_TB1DREAM"))
 
             elif dir_basename == "GRE":
