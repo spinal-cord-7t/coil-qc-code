@@ -44,8 +44,9 @@ for site in sites:
         input_path = os.path.join(input_site_path, subject)
         assert(os.path.exists(input_path))
 
+        subject_index = subject_input_names.index(subject)
         subject_prefix = "sub-" + site
-        subject = "sub-" + site + str(subject_input_names.index(subject) + 1)
+        subject = "sub-" + site + str(subject_index + 1)
         output_path = os.path.join(output_path_root, subject)
 
         participants_tsv_text += "\t".join([subject, "homo sapiens", "n/a", "n/a", "HC", site, "7T"]) + "\n"
@@ -144,10 +145,8 @@ for site in sites:
                     elif "flip angle map" in image_comments:
                         copy_scan(tfl_file_path, os.path.join(output_fmap_path, subject + "_acq-famp_TB1TFL"))
                         famp_found = True
-                if not anat_found:
-                    copy_scan(tfl_file_paths[0], os.path.join(output_fmap_path, subject + "_acq-anat_TB1TFL"))
                 if not famp_found:
-                    copy_scan(tfl_file_paths[2], os.path.join(output_fmap_path, subject + "_acq-famp_TB1TFL"))
+                    copy_scan(tfl_file_paths[[5, 0, 1][subject_index]], os.path.join(output_fmap_path, subject + "_acq-famp_TB1TFL"))
 
 with open(os.path.join(output_path_root, "participants.tsv"), "w") as f:
     f.write(participants_tsv_text)
