@@ -164,3 +164,6 @@ for site in sites:
 
 with open(os.path.join(output_path_root, "participants.tsv"), "w") as f:
     f.write(participants_tsv_text)
+
+shutil.copy2(os.path.join(project_root, ".bidsignore"), os.path.join(output_path_root, ".bidsignore"))
+shutil.copy2(os.path.join(project_root, "dataset_description.json"), os.path.join(output_path_root, "dataset_description.json"))
