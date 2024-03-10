@@ -97,7 +97,22 @@ for site in sites:
                     voltage_token = ""
                     if dir_basename in dream_acq_voltage_token:
                         voltage_token = "-" + dream_acq_voltage_token[dir_basename]
-                    copy_scan(dream_file_path, os.path.join(output_fmap_path, subject + "_acq-" + scan_type + voltage_token + "_TB1DREAM"))
+                    destination_path = os.path.join(output_fmap_path, subject + "_acq-" + scan_type + voltage_token + "_TB1DREAM")
+                    
+                    def get_fov(json_path):
+                        desc_tokens = json_attribute("ProtocolName", json_path).split("_")
+                        for token in desc_tokens:
+                            if token.startswith("FOV"):
+                                return int(token[3:])
+                        print("Could not find FOV token")
+                        assert(False)
+                    
+                    if os.path.exists(destination_path + ".nii.gz"):
+                        previous_fov = get_fov(destination_path + ".json")
+                        new_fov = get_fov(dream_json_path)
+                        if new_fov > previous_fov: continue
+
+                    copy_scan(dream_file_path, destination_path)
 
             elif dir_basename == "GRE":
                 gre_file_paths = sorted(glob.glob(os.path.join(dir_path, "*nii.gz")))
