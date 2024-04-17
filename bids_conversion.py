@@ -10,6 +10,8 @@ project_root = './'
 
 sites = ["MGH", "MNI", "MSSM", "NTNU", "UCL", "CRMBM", "MPI"]
 subject_input_names = ["SubD", "SubL", "SubR", "Spinoza6"]
+human_dataset_id = "ds005025"
+phantom_dataset_id = "ds005090"
 
 def copy_scan(input_path, output_path, scan_additional=""):
     nii_path = input_path
@@ -34,22 +36,31 @@ output_path_root = os.path.join(project_root, "outputs")
 if os.path.exists(output_path_root): shutil.rmtree(output_path_root)
 os.makedirs(output_path_root)
 
-participants_tsv_text = "participant_id\tspecies\tage\tsex\tpathology\tinstitution\tfield\n"
+participants_tsv_text_human = "participant_id\tspecies\tage\tsex\tpathology\tinstitution\tfield\n"
+participants_tsv_text_phantom = participants_tsv_text_human
 
 for site in sites:
     # Input directories are named SITE-original, for example "MGH-original"
     input_site_path = os.path.join(project_root, site + "-original")
 
-    for subject in [subject_dir for subject_dir in os.listdir(input_site_path) if os.path.isdir(os.path.join(input_site_path, subject_dir))]:
+    for subject in subject_input_names:
         input_path = os.path.join(input_site_path, subject)
         assert(os.path.exists(input_path))
 
         subject_index = subject_input_names.index(subject)
-        subject_prefix = "sub-" + site
-        subject = "sub-" + site + str(subject_index + 1)
-        output_path = os.path.join(output_path_root, subject)
+        dataset = ""
 
-        participants_tsv_text += "\t".join([subject, "homo sapiens", "n/a", "n/a", "HC", site, "7T"]) + "\n"
+        if subject == "Spinoza6":
+            dataset = phantom_dataset_id
+            subject = "sub-" + site
+            participants_tsv_text_phantom += "\t".join([subject, "homo sapiens (phantom)", "n/a", "n/a", "HC", site, "7T"]) + "\n"
+        else:
+            dataset = human_dataset_id
+            subject = "sub-" + site + str(subject_index + 1)
+            participants_tsv_text_human += "\t".join([subject, "homo sapiens", "n/a", "n/a", "HC", site, "7T"]) + "\n"
+
+        subject = "sub-" + site + str(subject_index + 1)
+        output_path = os.path.join(output_path_root, dataset, subject)
 
         output_anat_path = os.path.join(output_path, "anat")
         output_fmap_path = os.path.join(output_path, "fmap")
@@ -166,8 +177,14 @@ for site in sites:
                 if not famp_found:
                     copy_scan(tfl_file_paths[[5, 0, 1][subject_index]], os.path.join(output_fmap_path, subject + "_acq-famp_TB1TFL"))
 
-with open(os.path.join(output_path_root, "participants.tsv"), "w") as f:
-    f.write(participants_tsv_text)
+with open(os.path.join(output_path_root, human_dataset_id, "participants.tsv"), "w") as f:
+    f.write(participants_tsv_text_human)
 
-shutil.copy2(os.path.join(project_root, ".bidsignore"), os.path.join(output_path_root, ".bidsignore"))
-shutil.copy2(os.path.join(project_root, "dataset_description.json"), os.path.join(output_path_root, "dataset_description.json"))
+with open(os.path.join(output_path_root, phantom_dataset_id, "participants.tsv"), "w") as f:
+    f.write(participants_tsv_text_phantom)
+
+shutil.copy2(os.path.join(project_root, ".bidsignore"), os.path.join(output_path_root, human_dataset_id, ".bidsignore"))
+shutil.copy2(os.path.join(project_root, ".bidsignore"), os.path.join(output_path_root, phantom_dataset_id, ".bidsignore"))
+shutil.copy2(os.path.join(project_root, "dataset_description-human.json"), os.path.join(output_path_root, human_dataset_id, "dataset_description.json"))
+shutil.copy2(os.path.join(project_root, "dataset_description-phantom.json"), os.path.join(output_path_root, phantom_dataset_id, "dataset_description.json"))
+
