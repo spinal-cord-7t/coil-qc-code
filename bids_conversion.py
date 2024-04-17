@@ -8,7 +8,7 @@ import re
 # This script should be run from the directory containing the input sites directories
 project_root = './'
 
-sites = ["MGH", "MNI", "NYU"]
+sites = ["MGH", "MNI", "NYU", "NTNU", "UCL", "Marseille", "MPI"]
 subject_input_names = ["SubD", "SubL", "SubR", "Spinoza6"]
 
 def copy_scan(input_path, output_path, scan_additional=""):
@@ -79,6 +79,8 @@ for site in sites:
                     "Flipangle Map": "famp",
                     "REFVOLTMAP": "refv",
                     "B1MAP": "famp",
+                    "Transmitter Reference Map (Volt)": "refv",
+                    "flip angle map": "famp",
                 }
                 dream_acq_voltage_token = {
                     "DREAM_MEDIUM_066": "0.66",
@@ -104,12 +106,14 @@ for site in sites:
                         for token in desc_tokens:
                             if token.startswith("FOV"):
                                 return int(token[3:])
-                        print("Could not find FOV token")
-                        assert(False)
+                        return None
                     
                     if os.path.exists(destination_path + ".nii.gz"):
                         previous_fov = get_fov(destination_path + ".json")
                         new_fov = get_fov(dream_json_path)
+                        if previous_fov == None:
+                            print("Could not find FOV token", dream_json_path)
+                            continue
                         if new_fov > previous_fov: continue
 
                     copy_scan(dream_file_path, destination_path)
@@ -121,7 +125,7 @@ for site in sites:
                     gre_filename_tokens = gre_filename.split("_")
                     channel_name = gre_filename_tokens[-1].split(".")[0]
                     if not "ph" in gre_filename:
-                        if ("RX" in channel_name or channel_name.startswith("i")):
+                        if ("RX" in channel_name or channel_name.startswith("i") or channel_name.startswith("c")):
                             channel_number = re.findall(r"\d+", channel_name)[0]
                             copy_scan(gre_file_path, os.path.join(output_anat_path, subject + "_rec-uncombined" + channel_number + "_T2starw"))
                         elif json_attribute("NonlinearGradientCorrection", gre_file_path.replace(".nii.gz", ".json")) == True:
