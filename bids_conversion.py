@@ -8,7 +8,7 @@ import re
 # This script should be run from the directory containing the input sites directories
 project_root = './'
 
-sites = ["MGH", "MNI", "NYU", "NTNU", "UCL", "Marseille", "MPI"]
+sites = ["MGH", "MNI", "MSSM", "NTNU", "UCL", "CRMBM", "MPI"]
 subject_input_names = ["SubD", "SubL", "SubR", "Spinoza6"]
 
 def copy_scan(input_path, output_path, scan_additional=""):
