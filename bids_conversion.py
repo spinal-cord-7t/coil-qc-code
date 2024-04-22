@@ -59,7 +59,6 @@ for site in sites:
             subject = "sub-" + site + str(subject_index + 1)
             participants_tsv_text_human += "\t".join([subject, "homo sapiens", "n/a", "n/a", "HC", site, "7T"]) + "\n"
 
-        subject = "sub-" + site + str(subject_index + 1)
         output_path = os.path.join(output_path_root, dataset, subject)
 
         output_anat_path = os.path.join(output_path, "anat")
