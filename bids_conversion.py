@@ -53,7 +53,7 @@ for site in sites:
         if subject == "Spinoza6":
             dataset = phantom_dataset_id
             subject = "sub-" + site
-            participants_tsv_text_phantom += "\t".join([subject, "homo sapiens (phantom)", "n/a", "n/a", "HC", site, "7T"]) + "\n"
+            participants_tsv_text_phantom += "\t".join([subject, "phantom", "n/a", "n/a", "HC", site, "7T"]) + "\n"
         else:
             dataset = human_dataset_id
             subject = "sub-" + site + str(subject_index + 1)
