@@ -12,3 +12,5 @@ pandas
 scipy
 statsmodels
 repo2data
+openneuro-py
+ipywidgets
