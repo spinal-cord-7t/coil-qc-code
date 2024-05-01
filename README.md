@@ -2,7 +2,7 @@
 
 This repository contains a reproducible Jupyter notebook for the manuscript titled "Multi-center benchmarking of cervical spinal cord RF coils at 7 T: A traveling spines study"
 
-Instructions to run the notebook locally:
+**Instructions to run the notebook locally:**
 
 Install [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/installation.html)
 
