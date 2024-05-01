@@ -17,13 +17,15 @@ Install Python dependencies (assuming Python is already installed)
 pip install -r requirements.txt
 ~~~
 
-Download data
+Download datasets
 ~~~
-openneuro-py download --dataset ds005025 --target-dir data/
+openneuro-py download --dataset ds005025 --target-dir data-human/
+openneuro-py download --dataset ds005090 --target-dir data-phantom/
 ~~~
 
 
-Run notebook
+Run notebooks
 ~~~
-jupyter notebook data_processing.ipynb
+jupyter notebook data_processing-human.ipynb
+jupyter notebook data_processing-phantom.ipynb
 ~~~
