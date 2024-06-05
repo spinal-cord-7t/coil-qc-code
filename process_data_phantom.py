@@ -20,7 +20,7 @@ from pathlib import Path
 start_time = datetime.now()
 
 # Download data from OpenNeuro ⏳
-os.system('openneuro-py download --dataset ds005090 --target_dir data-phantom/')
+os.system('openneuro-py download --dataset ds005090 --target-dir data-phantom/')
 
 # Define useful variables
 path_data = os.path.join(os.getcwd(), "data-phantom/")
@@ -217,7 +217,7 @@ for fig_type, file_name in zip(fig_types, file_names):
 
         if file_name=="acq-coilQaSagLarge_SNR_T0000":
             # Splitting SNR map 
-            get_ipython().system('sct_image -i {subject}_acq-coilQaSagLarge_SNR.nii.gz -split t -o {subject}_acq-coilQaSagLarge_SNR.nii.gz')
+            os.system('sct_image -i {subject}_acq-coilQaSagLarge_SNR.nii.gz -split t -o {subject}_acq-coilQaSagLarge_SNR.nii.gz')
     
         # Load data
         map=nib.load(f"{subject}_{file_name}.nii.gz")
