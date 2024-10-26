@@ -27,12 +27,13 @@ jobs:
           pip list
           echo $PATH
           which openneuro-py
-    
+
       - name: Run Jupyter Notebooks
         run: |
           mkdir -p executed_notebooks
           for notebook in $(find . -name "*.ipynb"); do
-            jupyter nbconvert --to notebook --execute --inplace --output executed_notebooks/$(basename $notebook) $notebook
+            echo "Executing $notebook"
+            jupyter nbconvert --to notebook --execute --inplace --stdout --output executed_notebooks/$(basename $notebook) $notebook || exit 1
           done
 
       - name: Commit and Push Notebooks with Outputs
