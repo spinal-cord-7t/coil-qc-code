@@ -23,6 +23,17 @@ jobs:
           pip install nbstripout
           nbstripout --install
 
-      - name: Clear Notebook Outputs
+      - name: Strip notebook outputs
         run: |
-          nbstripout --force --keep-count .
+          find . -name "*.ipynb" -exec nbstripout --force --keep-count {} +
+
+      - name: Check for changes
+        run: git status
+
+      - name: Commit cleaned notebooks if needed
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git add .
+          git commit -m "Auto-strip notebook outputs" || echo "No changes to commit"
+          git push || echo "Nothing to push"
