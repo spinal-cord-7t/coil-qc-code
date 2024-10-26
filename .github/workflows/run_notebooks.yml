@@ -1,0 +1,40 @@
+name: Run Notebooks and Save Outputs
+
+on:
+  push:
+    branches:
+      - main  # Trigger the action on the main branch
+
+jobs:
+  run-notebooks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          pip install notebook
+
+      - name: Run Jupyter Notebooks
+        run: |
+          mkdir -p executed_notebooks
+          for notebook in $(find . -name "*.ipynb"); do
+            jupyter nbconvert --to notebook --execute --inplace --output executed_notebooks/$(basename $notebook) $notebook
+          done
+
+      - name: Commit and Push Notebooks with Outputs
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git checkout -b with-outputs || git checkout with-outputs
+          cp -r executed_notebooks/* .
+          git add *.ipynb
+          git commit -m "Add notebooks with outputs"
+          git push --force origin with-outputs
