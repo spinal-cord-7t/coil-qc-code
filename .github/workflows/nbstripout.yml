@@ -1,0 +1,39 @@
+name: Clear Notebook Outputs on Commit
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  strip-notebooks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Install nbstripout
+        run: |
+          pip install nbstripout
+          nbstripout --install
+
+      - name: Strip notebook outputs
+        run: |
+          find . -name "*.ipynb" -exec nbstripout --force --keep-count {} +
+
+      - name: Check for changes
+        run: git status
+
+      - name: Commit cleaned notebooks if needed
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git add .
+          git commit -m "Auto-strip notebook outputs" || echo "No changes to commit"
+          git push || echo "Nothing to push"
