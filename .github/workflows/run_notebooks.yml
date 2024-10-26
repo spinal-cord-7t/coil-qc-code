@@ -34,7 +34,8 @@ jobs:
           mkdir -p executed_notebooks
           for notebook in $(find . -name "*.ipynb"); do
             echo "Executing $notebook"
-            papermill $notebook executed_notebooks/$(basename $notebook) --stdout || exit 1
+            papermill $notebook executed_notebooks/$(basename $notebook) \
+              2>&1 | tee -a notebook_execution.log || exit 1
           done
 
       - name: Commit and Push Notebooks with Outputs
