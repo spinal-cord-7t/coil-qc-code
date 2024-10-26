@@ -21,6 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+          pip install papermill
 
       - name: Verify Installation and PATH
         run: |
@@ -33,10 +34,7 @@ jobs:
           mkdir -p executed_notebooks
           for notebook in $(find . -name "*.ipynb"); do
             echo "Executing $notebook"
-            python -u -m jupyter nbconvert --to notebook --execute --inplace \
-              --ExecutePreprocessor.timeout=600 \
-              --output executed_notebooks/$(basename $notebook) $notebook \
-              || exit 1
+            papermill $notebook executed_notebooks/$(basename $notebook) --stdout || exit 1
           done
 
       - name: Commit and Push Notebooks with Outputs
