@@ -22,6 +22,12 @@ jobs:
         run: |
           pip install -r requirements.txt
 
+      - name: Verify Installation and PATH
+        run: |
+          pip list
+          echo $PATH
+          which openneuro-py
+    
       - name: Run Jupyter Notebooks
         run: |
           mkdir -p executed_notebooks
