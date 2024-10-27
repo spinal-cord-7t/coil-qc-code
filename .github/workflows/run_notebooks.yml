@@ -85,6 +85,12 @@ jobs:
       - name: Check Execution Log
         run: cat notebook_execution.log
 
+      - name: Upload Executed Notebooks
+        uses: actions/upload-artifact@v3
+        with:
+          name: executed-notebooks
+          path: executed_notebooks/
+
   # Third job: Deploy to GitHub Pages (depends on run-notebooks)
   deploy:
     runs-on: ubuntu-latest
@@ -93,6 +99,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+
+      - name: Download Executed Notebooks
+        uses: actions/download-artifact@v3
+        with:
+          name: executed-notebooks
+          path: executed_notebooks/
 
       - name: Copy Executed Notebooks to Pages Directory
         run: |
