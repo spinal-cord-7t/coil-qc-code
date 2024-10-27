@@ -39,20 +39,20 @@ jobs:
       - name: Run Jupyter Notebooks
         run: |
           mkdir -p executed_notebooks
-          # for notebook in $(find . -name "*.ipynb"); do
-          #   echo "Executing $notebook"
-          #   papermill $notebook executed_notebooks/$(basename $notebook) \
-          #     2>&1 | tee -a notebook_execution.log || exit 1
-          # done
-          # TODO: once #42 is fixed, re-introduce the human notebook
-          papermill data_processing-phantom.ipynb executed_notebooks/$(basename data_processing-phantom.ipynb) 2>&1 | tee -a notebook_execution.log || exit 1
+          for notebook in $(find . -name "*.ipynb"); do
+            echo "Executing $notebook"
+            papermill $notebook executed_notebooks/$(basename $notebook) \
+              2>&1 | tee -a notebook_execution.log || exit 1
+          done
 
-      - name: Commit and Push Notebooks with Outputs
+      - name: Copy Executed Notebooks to Pages Directory
         run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          git checkout -b with-outputs || git checkout with-outputs
-          cp -r executed_notebooks/* .
-          git add *.ipynb
-          git commit -m "Add notebooks with outputs"
-          git push --force origin with-outputs
+          COMMIT_SHA=$(git rev-parse --short HEAD)
+          mkdir -p gh-pages/$COMMIT_SHA
+          cp executed_notebooks/*.ipynb gh-pages/$COMMIT_SHA/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: gh-pages
