@@ -82,6 +82,9 @@ jobs:
               2>&1 | tee -a notebook_execution.log || exit 1
           done
 
+      - name: Check Execution Log
+        run: cat notebook_execution.log
+
   # Third job: Deploy to GitHub Pages (depends on run-notebooks)
   deploy:
     runs-on: ubuntu-latest
