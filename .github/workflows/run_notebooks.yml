@@ -86,6 +86,9 @@ jobs:
     needs: run-notebooks  # Ensure this job runs after 'run-notebooks'
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Copy Executed Notebooks to Pages Directory
         run: |
           COMMIT_SHA=$(git rev-parse --short HEAD)
