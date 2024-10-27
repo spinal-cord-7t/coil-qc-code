@@ -73,7 +73,10 @@ jobs:
 
       - name: Run Jupyter Notebooks
         continue-on-error: true  # Allow workflow to continue even if notebook execution fails
+        env:
+          PATH: ${{ env.PATH }}
         run: |
+          echo $PATH
           mkdir -p executed_notebooks
           for notebook in $(find . -name "*.ipynb"); do
             echo "Executing $notebook"
