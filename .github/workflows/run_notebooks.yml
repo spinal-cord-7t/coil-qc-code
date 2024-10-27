@@ -45,11 +45,16 @@ jobs:
               2>&1 | tee -a notebook_execution.log || echo "Execution failed for $notebook"
           done
 
+      - name: List Executed Notebooks (Debug Step)
+        run: |
+          echo "Listing executed notebooks:"
+          ls -l executed_notebooks || echo "No notebooks found."
+
       - name: Copy Executed Notebooks to Pages Directory
         run: |
           COMMIT_SHA=$(git rev-parse --short HEAD)
           mkdir -p gh-pages/$COMMIT_SHA
-          cp executed_notebooks/*.ipynb gh-pages/$COMMIT_SHA/
+          cp executed_notebooks/*.ipynb gh-pages/$COMMIT_SHA/ || echo "No executed notebooks to copy."
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
