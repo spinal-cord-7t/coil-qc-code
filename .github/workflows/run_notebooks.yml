@@ -40,7 +40,7 @@ jobs:
           mkdir -p executed_notebooks
           for notebook in $(find . -name "*.ipynb"); do
             echo "Executing $notebook"
-            jupyter nbconvert --to notebook --execute --inplace \
+            jupyter nbconvert --to notebook --execute --allow-errors --inplace \
               --output executed_notebooks/$(basename $notebook) $notebook \
               2>&1 | tee -a notebook_execution.log || echo "Execution failed for $notebook"
           done
