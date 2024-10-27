@@ -45,7 +45,7 @@ jobs:
           #     2>&1 | tee -a notebook_execution.log || exit 1
           # done
           # TODO: once #42 is fixed, re-introduce the human notebook
-          papermill data_processing-phantom.ipynb executed_notebooks/$(basename data_processing-phantom) 2>&1 | tee -a notebook_execution.log || exit 1
+          papermill data_processing-phantom.ipynb executed_notebooks/$(basename data_processing-phantom.ipynb) 2>&1 | tee -a notebook_execution.log || exit 1
 
       - name: Commit and Push Notebooks with Outputs
         run: |
