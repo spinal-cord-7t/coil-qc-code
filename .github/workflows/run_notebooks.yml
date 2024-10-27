@@ -68,6 +68,8 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/spinalcordtoolbox/spinalcordtoolbox.git
           yes | spinalcordtoolbox/install_sct
+          # Make SCT callable from within the environment
+          source /home/runner/.bashrc
 
       - name: Run Jupyter Notebooks
         continue-on-error: true  # Allow workflow to continue even if notebook execution fails
