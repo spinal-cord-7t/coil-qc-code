@@ -74,7 +74,7 @@ jobs:
       - name: Run Jupyter Notebooks
         continue-on-error: true  # Allow workflow to continue even if notebook execution fails
         env:
-          PATH: ${{ env.PATH }}
+          PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${{ env.PATH }}
         run: |
           echo $PATH
           mkdir -p executed_notebooks
