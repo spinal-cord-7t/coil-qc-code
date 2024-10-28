@@ -1,0 +1,12 @@
+{
+    "BIDSVersion": "1.9.0",
+    "Name": "Traveling Spine 7T CoilQA Phantom",
+    "DatasetType": "raw",
+    "License": "CC0",
+    "Authors": [
+        "Kyota Poëti",
+        "Daniel Papp",
+        "Eva Alonso Ortiz",
+        "Julien Cohen-Adad"
+    ]
+}
