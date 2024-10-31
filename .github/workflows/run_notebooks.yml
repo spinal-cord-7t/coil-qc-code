@@ -6,43 +6,9 @@ on:
       - main  # Trigger the action on the main branch
 
 jobs:
-  # First job: Clear outputs with nbstripout
-  clear-outputs:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Install nbstripout
-        run: |
-          pip install nbstripout
-          nbstripout --install
-
-      - name: Strip notebook outputs
-        run: |
-          find . -name "*.ipynb" -exec nbstripout --force --keep-count {} +
-
-      - name: Check for changes
-        run: git status
-
-      - name: Commit cleaned notebooks if needed
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          git add .
-          git commit -m "Auto-strip notebook outputs" || echo "No changes to commit"
-          git push || echo "Nothing to push"
-
-  # Second job: Run the notebooks
+  # Run the notebooks
   run-notebooks:
     runs-on: ubuntu-latest
-    needs: clear-outputs  # Ensure this job runs after 'clear-outputs'
 
     steps:
       - name: Checkout repository
@@ -101,7 +67,7 @@ jobs:
           name: executed-notebooks
           path: executed_notebooks/
 
-  # Third job: Deploy to GitHub Pages (depends on run-notebooks)
+  # Deploy to GitHub Pages (depends on run-notebooks)
   deploy:
     runs-on: ubuntu-latest
     needs: run-notebooks  # Ensure this job runs after 'run-notebooks'
