@@ -1,7 +1,7 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: Multi-center benchmarking of cervical spinal cord RF coils at 7 T: A traveling spines study
+title: "Multi-center benchmarking of cervical spinal cord RF coils at 7 T: A traveling spines study"
 author: NeuroPoly Lab
 
 # Force re-execution of notebooks on each build.
