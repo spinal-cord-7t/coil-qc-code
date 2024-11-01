@@ -4,6 +4,7 @@ plotly
 seaborn
 markdown
 datalad
+IPython
 matplotlib
 nibabel
 notebook
