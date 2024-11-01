@@ -33,13 +33,12 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install notebook jupyter-book
-          #pip install -r requirements.txt
+          pip install -r requirements.txt
 
       - name: Install SCT
         run: |
           git clone --depth 1 https://github.com/spinalcordtoolbox/spinalcordtoolbox.git
-          #yes | spinalcordtoolbox/install_sct
+          yes | spinalcordtoolbox/install_sct
           # NB: install_sct edits ~/.bashrc, but those environment changes don't get passed to subsequent steps in GH Actions.
           # So, we filter through the .bashrc and pass the values to $GITHUB_ENV and $GITHUB_PATH.
           # Relevant documentation: https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#environment-files
@@ -50,7 +49,7 @@ jobs:
       - name: Verify SCT installation
         run: | 
           # Make sure SCT can be called from within the environment
-          #sct_check_dependencies
+          sct_check_dependencies
 
       - name: Run Jupyter Notebooks and build book
         continue-on-error: true  # Allow workflow to continue even if notebook execution fails
