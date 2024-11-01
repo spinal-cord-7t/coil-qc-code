@@ -1,0 +1,25 @@
+# Book settings
+# Learn more at https://jupyterbook.org/customize/config.html
+
+title: Multi-center benchmarking of cervical spinal cord RF coils at 7 T: A traveling spines study
+author: NeuroPoly Lab
+
+# Force re-execution of notebooks on each build.
+# See https://jupyterbook.org/content/execute.html
+execute:
+  execute_notebooks: force
+
+launch_buttons:
+  notebook_interface: jupyterlab
+  binderhub_url: https://mybinder.org
+  
+
+# Information about where the book exists on the web
+repository:
+  url: https://github.com/coil-qc-code/coil-qc-code  # Online location of your book
+  branch: mb/jb   # Which branch of the repository should be used when creating links (optional)
+
+only_build_toc_files: true
+
+execute:
+  timeout: 36000
