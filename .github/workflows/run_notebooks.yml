@@ -6,6 +6,10 @@ on:
       - main  # Trigger the action on the main branch
       - mb/jb
 
+permissions:
+  id-token: write
+  pages: write
+
 jobs:
   # Run the notebooks
   run-notebooks:
