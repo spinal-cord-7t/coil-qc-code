@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main  # Trigger the action on the main branch
+      - mb/jb
+
+permissions:
+  id-token: write
+  pages: write
 
 jobs:
   # Run the notebooks
@@ -46,51 +51,13 @@ jobs:
           # Make sure SCT can be called from within the environment
           sct_check_dependencies
 
-      - name: Run Jupyter Notebooks
+      - name: Run Jupyter Notebooks and build book
         continue-on-error: true  # Allow workflow to continue even if notebook execution fails
-        run: |
-          echo $PATH
-          mkdir -p executed_notebooks
-          for notebook in $(find . -name "*.ipynb"); do
-            echo "Executing $notebook"
-            jupyter nbconvert --to notebook --execute --allow-errors --inplace \
-              --output executed_notebooks/$(basename $notebook) $notebook \
-              2>&1 | tee -a notebook_execution.log || exit 1
-          done
-
-      - name: Check Execution Log
-        run: cat notebook_execution.log
-
-      - name: Upload Executed Notebooks
-        uses: actions/upload-artifact@v3
+        run: jupyter-book build .
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: executed-notebooks
-          path: executed_notebooks/
-
-  # Deploy to GitHub Pages (depends on run-notebooks)
-  deploy:
-    runs-on: ubuntu-latest
-    needs: run-notebooks  # Ensure this job runs after 'run-notebooks'
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Download Executed Notebooks
-        uses: actions/download-artifact@v3
-        with:
-          name: executed-notebooks
-          path: executed_notebooks/
-
-      - name: Copy Executed Notebooks to Pages Directory
-        run: |
-          COMMIT_SHA=$(git rev-parse --short HEAD)
-          mkdir -p gh-pages/$COMMIT_SHA
-          cp executed_notebooks/*.ipynb gh-pages/$COMMIT_SHA/
-
+          path: './_build/html'
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: gh-pages
-          publish_branch: gh-pages
+        id: deployment
+        uses: actions/deploy-pages@v4

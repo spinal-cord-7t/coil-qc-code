@@ -1,4 +1,4 @@
-jupyter-book==0.13.0
+jupyter-book
 lxml_html_clean
 plotly
 seaborn
