@@ -1,8 +1,17 @@
-# coil-qc-code
+# Multi-center benchmarking of cervical spinal cord RF coils at 7 T: A traveling spines study
+
+[![example workflow](https://github.com/spinal-cord-7t/coil-qc-code/actions/workflows/run_notebooks.yml/badge.svg)](https://github.com/spinal-cord-7t/coil-qc-code/actions/workflows/run_notebooks.yml)
+[![Dataset human](https://img.shields.io/badge/openneuro_human_dataset-blue)](https://openneuro.org/datasets/ds005025)
+[![Dataset phantom](https://img.shields.io/badge/openneuro_phantom_dataset-yellow)](https://openneuro.org/datasets/ds005090)
+[![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://spinal-cord-7t.github.io/coil-qc-code)
 
 This repository contains a reproducible Jupyter notebook for the manuscript titled "Multi-center benchmarking of cervical spinal cord RF coils at 7 T: A traveling spines study"
 
-**Instructions to run the notebook locally:**
+## See the notebook results
+
+You can access the processed notebooks with outputs by clicking on the Jupyter Book badge 👆
+
+## Run the notebook locally
 
 Install [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/installation.html)
 
