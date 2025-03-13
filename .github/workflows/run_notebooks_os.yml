@@ -49,7 +49,7 @@ jobs:
             git clone --depth 1 https://github.com/spinalcordtoolbox/spinalcordtoolbox.git
             # Run the installer script
             ./spinalcordtoolbox/install_sct.bat
-            export SCT_VERSION=$(cat spinalcordtoolbox/version.txt)
+            export SCT_VERSION=$(cat ./spinalcordtoolbox/spinalcordtoolbox/version.txt)
             echo "$USERPROFILE\sct_$SCT_VERSION\bin" >> $GITHUB_PATH
           else
             # Linux/macOS installation steps
