@@ -56,7 +56,7 @@ jobs:
             # Linux/macOS installation steps
             echo "Installing SCT on Linux/macOS..."
             git clone --depth 1 https://github.com/spinalcordtoolbox/spinalcordtoolbox.git
-            yes | spinalcordtoolbox/install_sct
+            printf 'y\ny\n' | spinalcordtoolbox/install_sct
             # Handle .bashrc modifications for Linux/macOS
             cat ~/.bashrc | grep "export SCT_DIR" | cut -d " " -f 2 >> $GITHUB_ENV
             cat ~/.bashrc | grep "export PATH" | grep -o "/.*" | cut -d ':' -f 1 >> $GITHUB_PATH
