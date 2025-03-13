@@ -46,9 +46,9 @@ jobs:
             # Windows-specific installation steps
             echo "Installing SCT on Windows..."
             # Download the Windows installer script
-            curl -LO https://github.com/spinalcordtoolbox/spinalcordtoolbox/releases/latest/download/install_sct-win.bat
+            git clone --depth 1 https://github.com/spinalcordtoolbox/spinalcordtoolbox.git
             # Run the installer script
-            ./install_sct-win.bat
+            ./spinalcordtoolbox/install_sct-win.bat
             # Set SCT_DIR and add SCT to PATH (as instructed by the installer)
             echo "SCT_DIR=C:\path\to\sct" >> $env:GITHUB_ENV
             echo "C:\path\to\sct\bin" >> $env:GITHUB_PATH
