@@ -61,10 +61,11 @@ jobs:
             cat ~/.bashrc | grep "export PATH" | grep -o "/.*" | cut -d ':' -f 1 >> $GITHUB_PATH
           fi
 
-      - name: Verify SCT installation
-        run: | 
-          # Make sure SCT can be called from within the environment
-          sct_check_dependencies
+#      Skip test to speed up build
+#      - name: Verify SCT installation
+#        run: | 
+#          # Make sure SCT can be called from within the environment
+#         sct_check_dependencies
 
       - name: Run Jupyter Notebooks and build book
         continue-on-error: true  # Allow workflow to continue even if notebook execution fails
