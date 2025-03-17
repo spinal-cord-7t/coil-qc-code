@@ -5,6 +5,7 @@ on:
     branches:
       - main  # Trigger the action on the main branch
       - mb/jb
+      - mb/157
 
 permissions:
   id-token: write
