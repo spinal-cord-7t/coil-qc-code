@@ -65,7 +65,6 @@ jobs:
             cat ~/.bashrc | grep "export PATH" | grep -o "/.*" | cut -d ':' -f 1 >> $GITHUB_PATH
           fi
 
-      Skip test to speed up build
       - name: Verify SCT installation
         run: | 
           # Make sure SCT can be called from within the environment
