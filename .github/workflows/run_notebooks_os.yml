@@ -46,7 +46,7 @@ jobs:
             # Windows-specific installation steps
             echo "Installing SCT on Windows..."
             # Download the Windows installer script
-            git clone --depth 1 https://github.com/spinalcordtoolbox/spinalcordtoolbox.git
+            git clone --depth 1 --single-branch --branch 6.5 https://github.com/spinalcordtoolbox/spinalcordtoolbox.git
             # Run the installer script
             ./spinalcordtoolbox/install_sct.bat
             export SCT_VERSION=$(cat ./spinalcordtoolbox/spinalcordtoolbox/version.txt)
@@ -54,7 +54,7 @@ jobs:
           else
             # Linux/macOS installation steps
             echo "Installing SCT on Linux/macOS..."
-            git clone --depth 1 https://github.com/spinalcordtoolbox/spinalcordtoolbox.git
+            git clone --depth 1 --single-branch --branch 6.5 https://github.com/spinalcordtoolbox/spinalcordtoolbox.git
             printf 'y\ny\n' | spinalcordtoolbox/install_sct
             # Handle .bashrc modifications for Linux/macOS
             cat ~/.bashrc | grep "export SCT_DIR" | cut -d " " -f 2 >> $GITHUB_ENV
