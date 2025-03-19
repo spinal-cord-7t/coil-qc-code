@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main  # Trigger the action on the main branch
-      - mb/jb
       - mb/pin
 
 permissions:
@@ -59,3 +58,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: './_build/html'
+#      - name: Deploy to GitHub Pages
+#        id: deployment
+#        uses: actions/deploy-pages@v4

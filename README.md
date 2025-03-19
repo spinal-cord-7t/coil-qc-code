@@ -13,21 +13,39 @@ You can access the processed notebooks with outputs by clicking on the Jupyter B
 
 ## Run the notebook locally
 
-Install [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/installation.html)
+### Pre-requesites
 
-Clone this repository
+- (recommended) Linux or MacOS
+- A virtual environment with Python 3.10.x installed
+  - e.g. Using a [miniforge](https://github.com/conda-forge/miniforge) installation, `conda create -n coil-qc python=3.10` in a terminal then follow instructions for activation.
+- Version 6.5 of the Spinal Cord Toolbox (SCT)
+  - `git clone --depth 1 --single-branch --branch 6.5 https://github.com/spinalcordtoolbox/spinalcordtoolbox.git`
+  - Follow the [SCT Installation instructions](https://spinalcordtoolbox.com/user_section/installation.html) for your operating system.
+
+### Installation
+
+Clone the [latest release](https://github.com/spinal-cord-7t/coil-qc-code/releases) of this repository, eg. for release `r20250319`:
+
 ~~~
-git clone https://github.com/spinal-cord-7t/coil-qc-code.git 
+git clone --depth 1 --single-branch --branch r20250319 https://github.com/spinal-cord-7t/coil-qc-code.git 
 cd coil-qc-code
 ~~~
 
-Install Python dependencies (assuming Python is already installed)
+Install Python dependencies (ensure that the virtual environment is created, see pre-requesites section above)
 ~~~
 pip install -r requirements.txt
 ~~~
 
-Run notebooks
+Run the notebooks
 ~~~
 jupyter notebook data_processing-human.ipynb
 jupyter notebook data_processing-phantom.ipynb
 ~~~
+
+Alternatively, you can execute the notebooks by building a Jupyter Book with `jupyter-book build .`:
+
+~~~
+jupyter-book build .
+~~~
+
+and then open the resulting `./_build/html/index.html` file in your web browser.
