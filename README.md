@@ -31,10 +31,12 @@ git clone --depth 1 --single-branch --branch r20250319 https://github.com/spinal
 cd coil-qc-code
 ~~~
 
-Install Python dependencies (ensure that the virtual environment is created, see pre-requesites section above)
+Install Python dependencies for the dowloaded version (ensure that the virtual environment is created, see pre-requesites section above)
 ~~~
-pip install -r requirements.txt
+pip install -r requirements-freeze.txt
 ~~~
+
+**Note:** If you downloaded a non-release version of this repository, or if the command above doesn't work for you, run `pip install -r requirements.txt` to download the latest releases of the dependencies.
 
 Run the notebooks
 ~~~
