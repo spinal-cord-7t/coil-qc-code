@@ -51,10 +51,10 @@ jobs:
             ./spinalcordtoolbox/install_sct.bat
 
             # Set SCT_DIR environment variable
-            echo "SCT_DIR=C:\\Users\\runneradmin\\sct_7.0.dev0" | Out-File -FilePath $env:GITHUB_ENV -Append
+            echo "SCT_DIR=C:\\Users\\runneradmin\\sct_7.0.dev0" >> $GITHUB_ENV
 
             # Append PATH environment variable to include SCT bin folder
-            echo "C:\\Users\\runneradmin\\sct_7.0.dev0\\bin\\" | Out-File -FilePath $env:GITHUB_PATH -
+            echo "C:\\Users\\runneradmin\\sct_7.0.dev0\\bin\\" >> $GITHUB_PATH
           else
             # Linux/macOS installation steps
             echo "Installing SCT on Linux/macOS..."
