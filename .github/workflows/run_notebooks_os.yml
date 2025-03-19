@@ -49,7 +49,12 @@ jobs:
             git clone --depth 1 --single-branch --branch 6.5 https://github.com/spinalcordtoolbox/spinalcordtoolbox.git
             # Run the installer script
             ./spinalcordtoolbox/install_sct.bat
-            source ~/.bashrc
+
+            # Set SCT_DIR environment variable
+            echo "SCT_DIR=C:\\Users\\runneradmin\\sct_7.0.dev0" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+            # Append PATH environment variable to include SCT bin folder
+            echo "C:\\Users\\runneradmin\\sct_7.0.dev0\\bin\\" | Out-File -FilePath $env:GITHUB_PATH -
           else
             # Linux/macOS installation steps
             echo "Installing SCT on Linux/macOS..."
@@ -60,11 +65,11 @@ jobs:
             cat ~/.bashrc | grep "export PATH" | grep -o "/.*" | cut -d ':' -f 1 >> $GITHUB_PATH
           fi
 
-#      Skip test to speed up build
-#      - name: Verify SCT installation
-#        run: | 
-#          # Make sure SCT can be called from within the environment
-#         sct_check_dependencies
+      Skip test to speed up build
+      - name: Verify SCT installation
+        run: | 
+          # Make sure SCT can be called from within the environment
+         sct_check_dependencies
 
       - name: Run Jupyter Notebooks and build book
         continue-on-error: true  # Allow workflow to continue even if notebook execution fails
